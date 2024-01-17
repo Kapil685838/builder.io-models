@@ -1,7 +1,11 @@
 <template>
   <div>
     <div v-if="content || isPreviewing()">
-      <RenderContent :model="model" :content="content" :api-key="builderApiKey" />
+      <RenderContent
+        :model="model"
+        :content="content"
+        :api-key="config.public.builderApiKey"
+      />
     </div>
     <div v-else>Content not Found</div>
   </div>
@@ -23,12 +27,10 @@ const props = defineProps({
 
 const config = useRuntimeConfig();
 
-const builderApiKey = config.builderApiKey;
-
 const { data: content } = await useAsyncData("builderData", () =>
   getContent({
     model: props.model,
-    apiKey: builderApiKey,
+    apiKey: config.public.builderApiKey,
     userAttributes: {
       urlPath: props.path,
     },
